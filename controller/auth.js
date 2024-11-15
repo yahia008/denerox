@@ -44,6 +44,7 @@ exports.signUp =  async(req, res) => {
                 balance:userAccount ? userAccount.balance : 0,
                 accountId:userAccount.user, 
                 token: generatejwt(user),
+                accId:userAccount._id
                 
             })
             
@@ -75,8 +76,8 @@ exports.signIn = async (req, res) => {
             accountName:userAccount.accountName,
             accountNumber:userAccount.accountNumber,
             accountId:userAccount.user,
-            password:authUser.password
-           // token: generateToken(authUser._id),
+            password:authUser.password,
+           token: generateToken(authUser),
           });
     }else{
       throw new Error('invalid username and passward')
