@@ -1,5 +1,5 @@
 const User = require('../model/user')
-const generatejwt = require('../config/utils');
+const {generatejwt} = require('../config/utils');
 const EventEmitter = require('events')
 const Account = require('../model/account')
 const event = new EventEmitter()
