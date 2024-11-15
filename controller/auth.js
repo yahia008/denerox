@@ -24,7 +24,7 @@ exports.signUp =  async(req, res) => {
           });
           
           await user.save()
-          event.on("usercreated", async()=>{
+          event.on("usercreated", async(firstName, lastName)=>{
             const accName =  `${firstName} ${lastName}`
             const userAccount = new Account({accountNumber:user.phoneNumber, accountName:accName, user:user._id})
             await userAccount.save()
@@ -43,7 +43,7 @@ exports.signUp =  async(req, res) => {
                 email:user.email,
                 balance:userAccount ? userAccount.balance : 0,
                 accountId:userAccount.user, 
-                token: generatejwt(user._id),
+                token: generatejwt(user),
                 
             })
             

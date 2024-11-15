@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
 
-exports.generatejwt = (id) => {
-    return jwt.sign({ id }, process.env.ACCESS_TOKEN | 'x3x3x3x3x3x3', { expiresIn: "30d" });
+exports.generatejwt = (user) => {
+    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "30d" });
 }

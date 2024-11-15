@@ -3,8 +3,8 @@ const connectDB = require("./config/connect")
 const cors = require('cors');
 const router = require('./routes/greets')
 const authRouter = require('./routes/auth')
-const greet = require('./routes/greets')
-const dotenv = require('dotenv')
+const greet = require('./routes/greets') 
+require('dotenv').config()
 
 
 const app = express()
