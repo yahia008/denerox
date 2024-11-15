@@ -77,7 +77,7 @@ exports.signIn = async (req, res) => {
             accountNumber:userAccount.accountNumber,
             accountId:userAccount.user,
             password:authUser.password,
-           token: generateToken(authUser),
+           token: generatejwt(authUser),
           });
     }else{
       throw new Error('invalid username and passward')
