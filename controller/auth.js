@@ -24,19 +24,15 @@ exports.signUp =  async(req, res) => {
           });
           
           await user.save()
-          event.on("usercreated", async(firstName, lastName, phoneNumber, user)=>{
+          
             const accName =  `${firstName} ${lastName}`
-            const userAccount = new Account(
-              {accountNumber: phoneNumber,
-              accountName: accName,
-              user: user._id,
-              accountType: 'savings', // Default value or as needed
-              balance: 0,  })
-            await userAccount.save()
+          const account = new Account({
+            user:user._id,
+            accountNumber:phoneNumber,
+            accountName:accName,
           })
-
-          event.emit('usercreated');
-          const userAccount = await Account.findOne({ accountNumber});
+      
+          await account.save()
 
         
           if(user) {
@@ -46,10 +42,10 @@ exports.signUp =  async(req, res) => {
                 id:user._id,
                 name:user.name,
                 email:user.email,
-                balance:userAccount ? userAccount.balance : 0,
-                accountId:userAccount.user, 
+                balance:account ? account.balance : 0,
+                accountId:account.user, 
                 token: generatejwt(user),
-                accId:userAccount._id
+                accId:account._id
                 
             })
             
@@ -66,10 +62,11 @@ exports.signUp =  async(req, res) => {
 
 exports.signIn = async (req, res) => {
     const {phoneNumber, password} = req.body
-    const userAccount = Account()
     try{
       if (!phoneNumber | !password) throw new Error("Please add all fields")
         const authUser = await User.findOne({phoneNumber})
+      const userAccount = await Account.findOne({ accountNumber:phoneNumber});
+      if(!userAccount) throw new Error("no such account")
 
     if(authUser && bcrypt.compare(password, authUser.password)){
      const user = {id:authUser._id}
