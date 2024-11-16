@@ -67,7 +67,7 @@ exports.signIn = async (req, res) => {
         const authUser = await User.findOne({phoneNumber})
 
     if(authUser && bcrypt.compare(password, authUser.password)){
-      const user = { id: authUser._id }
+      
         res.json({
           msg:"login successfull",
             id: authUser._id,
@@ -78,7 +78,7 @@ exports.signIn = async (req, res) => {
             accountNumber:userAccount.accountNumber,
             accountId:userAccount.user,
             password:authUser.password,
-           token: generatejwt(authUser._id),
+           token: generatejwt(authUser),
           });
     }else{
       throw new Error('invalid username and passward')
