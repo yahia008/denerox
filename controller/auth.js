@@ -67,6 +67,7 @@ exports.signIn = async (req, res) => {
         const authUser = await User.findOne({phoneNumber})
 
     if(authUser && bcrypt.compare(password, authUser.password)){
+      const user = { id: authUser._id }
         res.json({
           msg:"login successfull",
             id: authUser._id,
