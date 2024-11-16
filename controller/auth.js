@@ -24,7 +24,7 @@ exports.signUp =  async(req, res) => {
           });
           
           await user.save()
-          event.on("usercreated", async(firstName, lastName)=>{
+          event.on("usercreated", async(firstName, lastName, phoneNumber)=>{
             const accName =  `${firstName} ${lastName}`
             const userAccount = new Account({accountNumber:user.phoneNumber, accountName:accName, user:user._id})
             await userAccount.save()
@@ -68,6 +68,9 @@ exports.signIn = async (req, res) => {
 
     if(authUser && bcrypt.compare(password, authUser.password)){
      const user = {id:authUser._id}
+     console.log(userAccount)
+    
+     
      console.log(user)
         res.json({
           msg:"login successfull",
