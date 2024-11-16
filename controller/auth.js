@@ -24,9 +24,14 @@ exports.signUp =  async(req, res) => {
           });
           
           await user.save()
-          event.on("usercreated", async(firstName, lastName, phoneNumber)=>{
+          event.on("usercreated", async(firstName, lastName, phoneNumber, user)=>{
             const accName =  `${firstName} ${lastName}`
-            const userAccount = new Account({accountNumber:user.phoneNumber, accountName:accName, user:user._id})
+            const userAccount = new Account(
+              {accountNumber: phoneNumber,
+              accountName: accName,
+              user: user._id,
+              accountType: 'savings', // Default value or as needed
+              balance: 0,  })
             await userAccount.save()
           })
 
