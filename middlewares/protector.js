@@ -7,10 +7,11 @@ exports.protector = async(req, res, next) => {
         const authHeader = req.headers.authorization;
 
         if(!authHeader || !authHeader.startsWith('Bearer')) throw new Error('Authorization token is missing or invalid')
+            console.log(process.env.ACCESS_TOKEN)
             const decoded = await promisify(jwt.verify)(token, process.env.ACCESS_TOKEN);
-        console.log(process.env.ACCESS_TOKEN)
             console.log(decoded)
              req.user = decoded;
+             next()
     }catch(error){
         res.status(401).json({ message: 'Unauthorized access', error: error.message });
     }
