@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
+const crypto = require('crypto');
+
 
 exports.generatejwt = (user) => {
 
@@ -13,3 +16,32 @@ exports.generatejwt = (user) => {
 
     return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "30d" });
 }
+
+exports.sendmail = async(options) => {
+    const transporter = nodemailer.createTransport({
+    host: proccess.env.HOST, // Replace with your SMTP host
+    port: process.env.PORT, // Common SMTP port
+    auth: {
+        user: process.env.SMTP_USER, // Your SMTP username
+        pass: process.env.SMTP_PASS, // Your SMTP password
+    },
+
+   
+});
+
+const mailOptions = {
+    from: 'DENEROX',
+    to: options.email,
+    subject: options.subject,
+    text: options.message, // Plain text version
+
+};
+
+await transporter.sendMail(mailOptions);
+
+}
+
+
+exports.generateFourDigitCode = () => {
+    return crypto.randomInt(1000, 10000); // Range is inclusive of 1000 and exclusive of 10000
+};

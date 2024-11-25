@@ -1,0 +1,11 @@
+const express = require('express')
+const {deposit, transfer} = require('../controller/transaction')
+const {protector} = require('../middlewares/protector')
+const {transactionHistory, getTransactionById } = require('../controller/history')
+const router = express.Router()
+
+router.post('/deposit', protector, deposit)
+router.post('/transfer', protector, transfer)
+router.get('/search', search)
+router.get('/transtions/:id', protector, transactionHistory)
+router.get('/transtions/:id', protector, getTransactionById)
