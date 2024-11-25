@@ -37,7 +37,7 @@ exports.signUp =  async(req, res) => {
         
           if(user) {
             
-            res.staus(201).json({
+            res.status(201).json({
                 msg:'user created succesfully',
                 id:user._id,
                 name:user.name,

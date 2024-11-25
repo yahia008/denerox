@@ -8,6 +8,7 @@ exports.protector = async(req, res, next) => {
 
         if(!authHeader || !authHeader.startsWith('Bearer')) throw new Error('Authorization token is missing or invalid')
             const decoded = await promisify(jwt.verify)(token, process.env.ACCESS_TOKEN);
+        console.log(process.env.ACCESS_TOKEN)
             console.log(decoded)
              req.user = decoded;
     }catch(error){
