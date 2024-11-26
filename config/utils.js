@@ -14,7 +14,7 @@ exports.generatejwt = (user) => {
         throw new Error("ACCESS_TOKEN environment variable is not set.");  
     }  
 
-    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "30d" });
+    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: '1h' });
 }
 
 exports.sendmail = async(options) => {

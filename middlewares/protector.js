@@ -9,6 +9,10 @@ exports.protector = async(req, res, next) => {
         console.log('Authorization Header:', authHeader);
 
         if(!authHeader || !authHeader.startsWith('Bearer')) throw new Error('Authorization token is missing or invalid')
+        if(!process.env.ACCESS_TOKEN)  {
+                res.status(401);
+                throw new Error("Noting is here");
+        }
         
             const token = authHeader.split(' ')[1];
             if (!token) {
