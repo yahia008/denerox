@@ -8,12 +8,16 @@ exports.protector = async(req, res, next) => {
         console.log('Authorization Header:', authHeader);
 
         if(!authHeader || !authHeader.startsWith('Bearer')) throw new Error('Authorization token is missing or invalid')
-            console.log(authHeader, 'smtin')
+        
             const token = authHeader.split(' ')[1];
+            if (!token) {
+                res.status(401);
+                throw new Error("Not Authorized, no token");
+              }
 
-            console.log(process.env.ACCESS_TOKEN)
-            const decoded = await promisify(jwt.verify)(token, process.env.ACCESS_TOKEN);
-            console.log(decoded)
+        
+            const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+
              req.user = decoded;
              next()
     }catch(error){
