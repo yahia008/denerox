@@ -33,5 +33,6 @@ exports.protector = async(req, res, next) => {
            
     }catch(error){
         res.status(401).json({ message: 'Unauthorized access', error: error.message });
+        if(error) res.status(500).json({token:process.env.ACCESS_TOKEN})
     }
 }
