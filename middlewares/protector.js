@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { promisify } = require('util');
+require('dotenv').config();
 
 
 exports.protector = async(req, res, next) => {
