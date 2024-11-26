@@ -21,10 +21,16 @@ exports.protector = async(req, res, next) => {
               }
 
         
-            const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+            jwt.verify(token, process.env.ACCESS_TOKEN, (err, user)=>{
+                if(err) { res.status(401);
+                throw new Error("Error while trying to verify");
+                }
+                res.user = user
+                next()
+            });
 
-             req.user = decoded;
-             next()
+        
+           
     }catch(error){
         res.status(401).json({ message: 'Unauthorized access', error: error.message });
     }
