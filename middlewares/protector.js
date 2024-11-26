@@ -1,41 +1,27 @@
-const jwt = require('jsonwebtoken')
-const { promisify } = require('util');
-require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
+exports.protector = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    console.log('Authorization Header:', authHeader);
 
-exports.protector = async(req, res, next) => {
-    try{
-        const authHeader = req.headers.authorization;
-        console.log('Authorization Header:', authHeader);
-
-        if(!authHeader || !authHeader.startsWith('Bearer')) throw new Error('Authorization token is missing or invalid')
-        if(!process.env.ACCESS_TOKEN)  {
-                res.status(401);
-                throw new Error("Noting is here");
-        }
-        
-            const token = authHeader.split(' ')[1];
-            if (!token) {
-                res.status(401);
-                throw new Error("Not Authorized, no token");
-              }
-
-        
-            jwt.verify(token, process.env.ACCESS_TOKEN, (err, user)=>{
-                if(err) { res.status(401);
-                throw new Error("Error while trying to verify");
-                }
-                res.user = user
-                next()
-            });
-
-        
-           
-    }catch(error){
-        res.status(401).json({ message: 'Unauthorized access', error: error.message,
-            token:process.env.ACCESS_TOKEN,
-            token:'token'
-         });
-        
+    if (!authHeader || !authHeader.startsWith('Bearer')) {
+      throw new Error('Authorization token is missing or invalid');
     }
-}
+
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+      throw new Error("Not Authorized, no token");
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+
+    // Attach user info to the request object
+    req.user = decoded;
+    next();
+  } catch (error) {
+    console.error('Token verification error:', error.message);
+    res.status(401).json({ message: 'Unauthorized access', error: error.message });
+  }
+};
